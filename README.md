@@ -50,4 +50,15 @@ app.use(koaBody({
 
 1. 下载 jsonwebtoken koa-jwt
 
+2. 签发 token
+
+```
+ const token = jwt.sign({ name }, secret, { expiresIn: '100s' });
+```
+
+3. token 校验
+   查看 middleware 的 auth.js
+
+4. auth 的运用. 在 router 中 添加 auth 的中间件
+
 ### 2. 游客上传（24H 自动删除）

@@ -24,6 +24,7 @@ module.exports = () => {
                 };
                 await next(); //运行完毕，交给下一个中间件
             } catch (err) {
+                console.info(99999, err)
                 if (JSON.stringify(err).search(/JsonWebTokenError/)) {
                     CallbackModel(ctx, 401, 'Token无效', JSON.stringify(err))
                 } else {
