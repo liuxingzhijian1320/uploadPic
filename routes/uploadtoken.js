@@ -3,7 +3,7 @@ const router = new Router({ prefix: '/api/token' });
 
 const {
     getToken,
-} = require('../controllers/uploadtoken')
+} = require('../controllers/UploadToken')
 
 // 获取
 router.get('/', getToken);
