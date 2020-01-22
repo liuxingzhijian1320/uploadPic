@@ -12,6 +12,13 @@ const koaBody = require('koa-body');
 const routing = require('./routes'); // router路由
 
 
+// app.use(async function(ctx, next) {
+//     let url = ctx.request['header'].host + ctx.request['url']
+//     console.info(234, ctx.request, url)
+//     return await next()
+// })
+
+
 // error handler
 onerror(app)
 
