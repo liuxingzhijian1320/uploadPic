@@ -29,29 +29,34 @@ class UploadPic {
             // 上传单个文件
             const file = ctx.request.files.file; // 获取上传文件
             const { bucket = '' } = ctx.request.body;
-
-            // 创建可读流
+            console.info('bucket', bucket)
+                // 创建可读流
             const reader = fs.createReadStream(file.path);
             // console.info('reader', reader)
             let dir;
             if (bucket) {
-                // 生成文件夹
+                console.info(99)
+                    // 生成文件夹
                 dir = path.join(__dirname, `../public/images/${bucket}`);
                 checkDirExist(dir)
             } else {
+                console.info(88)
                 dir = path.join(__dirname, `../public/images`);
             }
 
+            console.info('dir', dir)
+
             // 生成图片文件名字
             let newName = getUploadFileExt(file.name);
-            // console.info('newName', newName);
+            console.info('newName', newName);
 
             // 文件目录
             let filePath = `${dir}/${newName}`
+            console.info('filePath', filePath)
 
             // 创建可写流
             const upStream = fs.createWriteStream(filePath);
-            // console.info('upStream', upStream)
+            console.info('upStream', upStream)
 
             // 可读流通过管道写入可写流
             reader.pipe(upStream);
