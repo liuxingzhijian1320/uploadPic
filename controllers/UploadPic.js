@@ -28,10 +28,9 @@ class UploadPic {
         try {
             // 上传单个文件
             const file = ctx.request.files.file; // 获取上传文件
-            const { bucket = '' } = ctx.request.body;
+            const { bucket = 'test' } = ctx.request.body;
             console.info('bucket', bucket)
-                // 创建可读流
-            const reader = fs.createReadStream(file.path);
+
             // console.info('reader', reader)
             let dir;
             if (bucket) {
@@ -44,7 +43,7 @@ class UploadPic {
                 dir = path.join(__dirname, `../public/images`);
             }
 
-            console.info('dir', dir)
+            console.info('dir', dir, file)
 
             // 生成图片文件名字
             let newName = getUploadFileExt(file.name);
@@ -53,6 +52,9 @@ class UploadPic {
             // 文件目录
             let filePath = `${dir}/${newName}`
             console.info('filePath', filePath)
+
+            // 创建可读流
+            const reader = fs.createReadStream(file.path);
 
             // 创建可写流
             const upStream = fs.createWriteStream(filePath);

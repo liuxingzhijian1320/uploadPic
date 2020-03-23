@@ -31,6 +31,7 @@
     function uploadPicHandler() {
         var formData = new FormData();
         formData.append('file', $('#img')[0].files[0]);
+        formData.append('bucket', 'test');
 
         $.ajax({
             url: 'http://localhost:3092/api/pic/upload',
