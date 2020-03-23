@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 class Utils {
     CallbackModel(ctx, status, message, data) {
         ctx.response.status = status;
@@ -46,6 +48,21 @@ class Utils {
             return false
         }
     }
+
+    // 删除文件
+    delFile(path) {
+        return new Promise((resolve, reject) => {
+            fs.unlink(path, (err) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    resolve(null)
+                }
+            })
+        })
+    }
+
+
 }
 
 module.exports = new Utils;
