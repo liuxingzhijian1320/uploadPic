@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<script src="https://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+  </head>
+  <script src="https://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
 
-<body>
+  <body>
     <input id="img" type="file" />
     <input type="button" value="上传" onclick="uploadPicHandler()" />
-</body>
-<script>
+  </body>
+  <script>
     var token;
 
     getToken();
 
     function getToken() {
-        $.ajax({
-            url: 'http://localhost:3092/api/token',
-            type: 'get',
-            contentType: false,
-            processData: false,
-            success: data => {
-                token = data.data.token;
-            },
-        });
+      $.ajax({
+        url: 'http://localhost:3092/api/token',
+        type: 'get',
+        contentType: false,
+        processData: false,
+        success: data => {
+          token = data.data.token;
+        },
+      });
     }
 
     function uploadPicHandler() {
-        var formData = new FormData();
-        formData.append('file', $('#img')[0].files[0]);
-        formData.append('bucket', 'test');
+      var formData = new FormData();
+      formData.append('file', $('#img')[0].files[0]);
+      formData.append('bucket', 'upload');
 
-        $.ajax({
-            url: 'http://localhost:3092/api/pic/upload',
-            type: 'POST',
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(data) {
-                alert('上传成功');
-            },
-        });
+      $.ajax({
+        url: 'http://localhost:3092/api/pic/upload',
+        type: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function(data) {
+          alert('上传成功');
+        },
+      });
     }
-</script>
-
+  </script>
 </html>
