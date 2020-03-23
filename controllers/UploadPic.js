@@ -31,18 +31,9 @@ class UploadPic {
             const { bucket = 'test' } = ctx.request.body;
             console.info('bucket', bucket)
 
-            // console.info('reader', reader)
-            let dir;
-            if (bucket) {
-                console.info(99)
-                    // 生成文件夹
-                dir = path.join(__dirname, `../public/images/${bucket}`);
-                checkDirExist(dir)
-            } else {
-                console.info(88)
-                dir = path.join(__dirname, `../public/images`);
-            }
-
+            // 生成文件夹
+            let dir = path.join(__dirname, `../public/images/${bucket}`);
+            checkDirExist(dir)
             console.info('dir', dir, file)
 
             // 生成图片文件名字
@@ -63,12 +54,7 @@ class UploadPic {
             // 可读流通过管道写入可写流
             reader.pipe(upStream);
 
-            let urlstr;
-            if (bucket) {
-                urlstr = `${ctx.origin}/images/${bucket}/${newName}`
-            } else {
-                urlstr = `${ctx.origin}/images/${newName}`
-            }
+            let urlstr = `${ctx.origin}/images/${bucket}/${newName}`
 
             CallbackModel(ctx, 200, '上传成功！', { url: urlstr })
         } catch (err) {
