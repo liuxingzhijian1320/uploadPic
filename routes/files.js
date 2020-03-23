@@ -3,13 +3,13 @@ const router = new Router({ prefix: '/api/files' });
 const auth = require('../middleware/auth')()
 
 const {
-    // deletepic,
+    delpic,
     getlist
 } = require('../controllers/Files')
 
 // 列表
 router.get('/list', getlist);
 // 删除
-// router.post('/del', auth, deletepic);
+router.post('/delpic', auth, delpic);
 
 module.exports = router;

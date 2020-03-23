@@ -37,7 +37,7 @@ class Utils {
      * @return Boolean
      * */
     judgeHttpUrl(url = '') {
-        console.info('judgeHttpUrl---123', url)
+        // console.info('judgeHttpUrl---123', url)
         if (!url) return false
         const urls = ['zhooson.cn', 'localhost:3092']
         if (urls.indexOf(url) > -1) {
