@@ -30,6 +30,22 @@ class Utils {
             return [year, month, day].join("-") + " " + [hour, minute, second].join(":")
         }
     }
+
+    /**
+     * 设置白名单
+     * @params url fetch的路径
+     * @return Boolean
+     * */
+    judgeHttpUrl(url = '') {
+        console.info('judgeHttpUrl---123', url)
+        if (!url) return false
+        const urls = ['zhooson.cn', 'localhost:3092']
+        if (urls.indexOf(url) > -1) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 module.exports = new Utils;
