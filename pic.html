@@ -4,47 +4,171 @@
     <meta charset="UTF-8" />
     <title>Title</title>
   </head>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+  />
+
   <script src="https://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.6.11/vue.min.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://cdn.bootcss.com/qs/6.9.1/qs.min.js"></script>
+  <style>
+    .avatar-uploader .el-upload {
+      position: relative;
+      overflow: hidden;
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .avatar-uploader .el-upload:hover {
+      border-color: #409eff;
+    }
+
+    .avatar-uploader-icon {
+      width: 178px;
+      height: 178px;
+      color: #8c939d;
+      text-align: center;
+      font-size: 28px;
+      line-height: 178px;
+    }
+
+    .avatar {
+      display: block;
+      width: 178px;
+      height: 178px;
+    }
+  </style>
 
   <body>
-    <input id="img" type="file" />
-    <input type="button" value="上传" onclick="uploadPicHandler()" />
+    <div id="app">
+      <el-upload
+        :action="`${actionUrl}/api/pic/upload`"
+        list-type="picture-card"
+        :headers="headers"
+        name="file"
+        :data="formData"
+        :on-success="handleAvatarSuccess"
+        :on-preview="handlePictureCardPreview"
+        :on-remove="handleRemove"
+      >
+        <i class="el-icon-plus"></i>
+      </el-upload>
+      <el-dialog :visible.sync="dialogVisible" size="tiny">
+        <img width="100%" :src="imageUrl" alt="" />
+      </el-dialog>
+
+      <!-- <input id="img" type="file" /> -->
+      <!-- <input type="button" value="上传" onclick="uploadPicHandler()" /> -->
+    </div>
   </body>
   <script>
-    var token;
-
-    getToken();
-
-    function getToken() {
-      $.ajax({
-        url: 'http://localhost:3092/api/token',
-        type: 'get',
-        contentType: false,
-        processData: false,
-        success: data => {
-          token = data.data.token;
+    const bucketName = 'upload';
+    var app = new Vue({
+      el: '#app',
+      data: {
+        test: 111,
+        formData: {
+          bucket: bucketName,
         },
-      });
-    }
-
-    function uploadPicHandler() {
-      var formData = new FormData();
-      formData.append('file', $('#img')[0].files[0]);
-      formData.append('bucket', 'upload');
-
-      $.ajax({
-        url: 'http://localhost:3092/api/pic/upload',
-        type: 'POST',
+        actionUrl: 'http://localhost:3092',
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer `,
         },
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(data) {
-          alert('上传成功');
+        imageUrl: '',
+        dialogVisible: false,
+      },
+      methods: {
+        handleAvatarSuccess(file) {
+          this.imageUrl = file.data.url;
         },
-      });
-    }
+        handleRemove(file, fileList) {
+          console.log(file, fileList);
+          let img = file.response.data.url.split('images/upload/')[1];
+          this.delpic(img);
+        },
+        handlePictureCardPreview(file) {
+          this.imageUrl = file.url;
+          this.dialogVisible = true;
+        },
+        // 获取token
+        getToken() {
+          $.ajax({
+            url: `${this.actionUrl}/api/token`,
+            type: 'get',
+            contentType: false,
+            processData: false,
+            success: res => {
+              this.headers = {
+                Authorization: `Bearer ${res.data.token}`,
+              };
+            },
+          });
+        },
+        // 删除图片
+        delpic(pid) {
+          $.ajax({
+            type: 'POST',
+            url: `${this.actionUrl}/api/files/delpic`,
+            headers: {
+              ...this.headers,
+              // 'Content-Type': 'multipart/form-data;',
+              // 'Content-Type': 'application/json; charset=UTF-8',
+              // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            data: {
+              bucket: bucketName,
+              pid,
+            },
+            success: res => {
+              console.info('删除', res);
+            },
+            fail: err => {
+              console.info(23423, err);
+            },
+          });
+        },
+      },
+      mounted() {
+        this.getToken();
+      },
+    });
+    // var token;
+
+    // getToken();
+
+    // function getToken() {
+    //   $.ajax({
+    //     url: 'http://localhost:3092/api/token',
+    //     type: 'get',
+    //     contentType: false,
+    //     processData: false,
+    //     success: data => {
+    //       token = data.data.token;
+    //     },
+    //   });
+    // }
+
+    // function uploadPicHandler() {
+    //   var formData = new FormData();
+    //   formData.append('file', $('#img')[0].files[0]);
+    //   formData.append('bucket', 'upload');
+
+    //   $.ajax({
+    //     url: 'http://localhost:3092/api/pic/upload',
+    //     type: 'POST',
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     data: formData,
+    //     contentType: false,
+    //     processData: false,
+    //     success: function(data) {
+    //       alert('上传成功');
+    //     },
+    //   });
+    // }
   </script>
 </html>

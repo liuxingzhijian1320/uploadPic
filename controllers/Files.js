@@ -20,9 +20,14 @@ class Files {
 
     // 删除图片
     static async delpic(ctx) {
+        // console.info(9999, ctx)
         try {
             // pid ==> 1.jpg
+            console.info('ctx.request.body', JSON.stringify(ctx.request.body))
+
+
             const { bucket = 'test', pid } = ctx.request.body;
+
             // 找到当前文件
             let curPath = `public/images/${bucket}/${pid}`;
             // 先判断当前文件是否存在
@@ -36,7 +41,6 @@ class Files {
             } else {
                 CallbackModel(ctx, 404, '当前图片不存在', {})
             }
-            console.info(333)
         } catch (error) {
             console.info(888, error)
             CallbackModel(ctx, 500, '删除文件失败', JSON.stringify(error))
