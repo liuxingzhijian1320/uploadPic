@@ -19,7 +19,7 @@ function getUploadFileExt(name) {
     let ext = name.split('.');
     let first = name.replace(ext[ext.length - 1], '');
     let last = timeFormat(new Date(), 'yyyy-mm-dd-HH-mm-ss')
-    return `${first}${last}.${ext[ext.length - 1]}`
+    return `${first.slice(0,10)}${last}.${ext[ext.length - 1]}`
 }
 
 class UploadPic {
