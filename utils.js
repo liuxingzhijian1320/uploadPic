@@ -41,7 +41,7 @@ class Utils {
     judgeHttpUrl(url = '') {
         // console.info('judgeHttpUrl---123', url)
         if (!url) return false
-        const urls = ['zhooson.cn', 'localhost:3092']
+        const urls = ['zhooson.cn', 'localhost:3092', 'hall.zhooson.cn']
         if (urls.indexOf(url) > -1) {
             return true
         } else {
