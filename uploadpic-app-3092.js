@@ -11,6 +11,8 @@ const koaBody = require("koa-body");
 
 const routing = require("./routes"); // router路由
 const { port } = require("./config");
+var cors = require("koa2-cors");
+app.use(cors());
 
 // app.use(async function(ctx, next) {
 //     let url = ctx.request['header'].host + ctx.request['url']
@@ -19,6 +21,7 @@ const { port } = require("./config");
 
 app.use(async function(ctx, next) {
     ctx.append("Referer", "https://hall.zhooson.cn");
+    ctx.append("Referer", "https://admin.zhooson.cn");
     return await next();
 });
 
