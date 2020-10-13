@@ -1,6 +1,6 @@
-const { CallbackModel, timeFormat } = require('../utils')
-const fs = require('fs');
-const path = require('path');
+const { CallbackModel, timeFormat } = require("../utils");
+const fs = require("fs");
+const path = require("path");
 
 // 递归创建目录 同步方法
 function checkDirExist(dirname) {
@@ -16,10 +16,11 @@ function checkDirExist(dirname) {
 
 // 生成新的文件名称
 function getUploadFileExt(name) {
-    let ext = name.split('.');
-    let first = name.replace(ext[ext.length - 1], '');
-    let last = timeFormat(new Date(), 'yyyy-mm-dd-HH-mm-ss')
-    return `${first.slice(0,10)}${last}.${ext[ext.length - 1]}`
+    let ext = name.split(".");
+    let first = name.replace(ext[ext.length - 1], "");
+    let last = timeFormat(new Date(), "yyyy-mm-dd-HH-mm-ss");
+    // return `${first.slice(0,10)}${last}.${ext[ext.length - 1]}`
+    return `${last}.${ext[ext.length - 1]}`;
 }
 
 class UploadPic {
@@ -28,7 +29,7 @@ class UploadPic {
         try {
             // 上传单个文件
             const file = ctx.request.files.file; // 获取上传文件
-            const { bucket = 'test' } = ctx.request.body;
+            const { bucket = "test" } = ctx.request.body;
             // console.info('bucket', bucket)
 
             // 生成文件夹
@@ -59,24 +60,23 @@ class UploadPic {
             let delpath = path.join(__dirname, `../public/images`);
             let files = fs.readdirSync(delpath);
             // console.info(234, delpath, files)
-            files.forEach(item => {
+            files.forEach((item) => {
                 // 判断 是不是文件夹 【true: 文件夹】
                 if (!fs.lstatSync(`${delpath}/${item}`).isDirectory()) {
-                    if (item.indexOf('upload_') > -1) {
-                        fs.unlink(`${delpath}/${item}`)
+                    if (item.indexOf("upload_") > -1) {
+                        fs.unlink(`${delpath}/${item}`);
                     }
                 }
             });
             // ------ ending ------
 
-            let urlstr = `${ctx.origin}/images/${bucket}/${newName}`
-            CallbackModel(ctx, 200, '上传成功！', { url: urlstr })
-
+            let urlstr = `https://upload.zhooson.cn/images/${bucket}/${newName}`;
+            CallbackModel(ctx, 200, "上传成功！", { url: urlstr });
         } catch (err) {
-            console.info(33, err)
-            CallbackModel(ctx, 500, '上传失败！', JSON.stringify(err))
+            console.info(33, err);
+            CallbackModel(ctx, 500, "上传失败！", JSON.stringify(err));
         }
     }
 }
 
-module.exports = UploadPic
+module.exports = UploadPic;
